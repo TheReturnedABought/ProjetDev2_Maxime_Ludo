@@ -1,0 +1,153 @@
+import random
+
+# Classes pour les éléments principaux du jeu
+class Lieu:
+    def __init__(self, nom, description):
+        self.nom = nom
+        self.description = description
+        self.ennemis = []
+        self.objets = []
+        self.voisins = {}
+
+    def ajouter_voisin(self, direction, lieu):
+        self.voisins[direction] = lieu
+
+    def afficher_description(self):
+        print(f"\nVous êtes à {self.nom}.")
+        print(self.description)
+        if self.ennemis:
+            print("Ennemis présents : " + ", ".join([ennemi.nom for ennemi in self.ennemis]))
+
+class Ennemi:
+    def __init__(self, nom, points_de_vie):
+        self.nom = nom
+        self.points_de_vie = points_de_vie
+
+    def attaquer(self, joueur):
+        degats = random.randint(1, 5)
+        joueur.points_de_vie -= degats
+        print(f"{self.nom} attaque ! Vous perdez {degats} points de vie.")
+
+class Objet:
+    def __init__(self, nom, description, utilisable=False):
+        self.nom = nom
+        self.description = description
+        self.utilisable = utilisable
+
+class Quete:
+    def __init__(self, description, recompense):
+        self.description = description
+        self.recompense = recompense
+        self.complete = False
+
+    def completer(self, joueur):
+        if not self.complete:
+            self.complete = True
+            joueur.points_de_vie += self.recompense
+            print(f"Quête accomplie ! Vous gagnez {self.recompense} points de vie.")
+
+class Joueur:
+    def __init__(self, nom):
+        self.nom = nom
+        self.points_de_vie = 10
+        self.objets = []
+        self.quetes = []
+        self.lieu_actuel = None
+
+    def deplacer(self, direction):
+        if direction in self.lieu_actuel.voisins:
+            self.lieu_actuel = self.lieu_actuel.voisins[direction]
+            self.lieu_actuel.afficher_description()
+        else:
+            print("Vous ne pouvez pas aller dans cette direction.")
+
+    def ramasser_objet(self, objet):
+        self.objets.append(objet)
+        print(f"Vous ramassez {objet.nom}.")
+
+    def afficher_statistiques(self):
+        print(f"\n{self.nom}: {self.points_de_vie} points de vie")
+        if self.objets:
+            print("Objets : " + ", ".join([objet.nom for objet in self.objets]))
+
+# Initialisation du jeu
+def initialiser_jeu():
+    # Lieux
+    village = Lieu("Village", "Un village tranquille avec des maisons en bois.")
+    foret = Lieu("Forêt", "Une forêt dense et mystérieuse.")
+    grotte = Lieu("Grotte", "Une grotte sombre remplie d'échos effrayants.")
+
+    village.ajouter_voisin("nord", foret)
+    foret.ajouter_voisin("sud", village)
+    foret.ajouter_voisin("est", grotte)
+    grotte.ajouter_voisin("ouest", foret)
+
+    # Ennemis
+    loup = Ennemi("Loup", 5)
+    troll = Ennemi("Troll", 8)
+    foret.ennemis.append(loup)
+    grotte.ennemis.append(troll)
+
+    # Objets
+    potion = Objet("Potion de vie", "Une potion qui restaure de la vie", utilisable=True)
+    foret.objets.append(potion)
+
+    # Quêtes
+    quete1 = Quete("Trouver une herbe médicinale dans la forêt", recompense=5)
+
+    # Joueur
+    joueur = Joueur(nom="Héros")
+    joueur.lieu_actuel = village
+    joueur.quetes.append(quete1)
+
+    return joueur
+
+# Boucle principale du jeu
+def jouer():
+    joueur = initialiser_jeu()
+    print("Bienvenue dans l'aventure !")
+
+    while joueur.points_de_vie > 0:
+        joueur.afficher_statistiques()
+        action = input("\nQue voulez-vous faire ? (explorer, ramasser, utiliser objet, quête, quitter): ").strip().lower()
+
+        if action == "explorer":
+            direction = input("Dans quelle direction ? (nord, sud, est, ouest): ").strip().lower()
+            joueur.deplacer(direction)
+
+        elif action == "ramasser":
+            if joueur.lieu_actuel.objets:
+                objet = joueur.lieu_actuel.objets.pop(0)
+                joueur.ramasser_objet(objet)
+            else:
+                print("Aucun objet à ramasser ici.")
+
+        elif action == "utiliser objet":
+            for objet in joueur.objets:
+                if objet.utilisable:
+                    print(f"Vous utilisez {objet.nom} et regagnez des points de vie !")
+                    joueur.points_de_vie += 3
+                    joueur.objets.remove(objet)
+                    break
+            else:
+                print("Aucun objet utilisable dans votre inventaire.")
+
+        elif action == "quête":
+            for quete in joueur.quetes:
+                if not quete.complete:
+                    print(quete.description)
+                    if joueur.lieu_actuel.nom == "Forêt":
+                        quete.completer(joueur)
+                else:
+                    print("Vous avez terminé toutes les quêtes.")
+
+        elif action == "quitter":
+            print("Merci d'avoir joué !")
+            break
+
+        else:
+            print("Action non reconnue.")
+
+# Lancer le jeu
+if __name__ == "__main__":
+    jouer()
