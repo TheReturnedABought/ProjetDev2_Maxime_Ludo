@@ -1,153 +1,138 @@
+#code fait sans chatgpt (pour ça qu'il y a pas mal de faute) il faut juste améliorer les boucles et conditions pour que ca "fonctionn"
+
 import random
 
-# Classes pour les éléments principaux du jeu
-class Lieu:
-    def __init__(self, nom, description):
-        self.nom = nom
-        self.description = description
-        self.ennemis = []
-        self.objets = []
-        self.voisins = {}
+class Character:
+    def __init__(self, name, health, attack_power):
+        self.name = name
+        self.health = health
+        self.attack = attack_power
 
-    def ajouter_voisin(self, direction, lieu):
-        self.voisins[direction] = lieu
+    def deal_attack(self, target):
+        damage = random.randint(1, 5)
+        target.health -= damage
+        print(f"{self.name} attaque ! point de vie perdu : {damage}")
 
-    def afficher_description(self):
-        print(f"\nVous êtes à {self.nom}.")
-        print(self.description)
-        if self.ennemis:
-            print("Ennemis présents : " + ", ".join([ennemi.nom for ennemi in self.ennemis]))
+    def isAlive(self):
+        return self.health > 0
 
-class Ennemi:
-    def __init__(self, nom, points_de_vie):
-        self.nom = nom
-        self.points_de_vie = points_de_vie
+    def heal(self):
+        pass
 
-    def attaquer(self, joueur):
-        degats = random.randint(1, 5)
-        joueur.points_de_vie -= degats
-        print(f"{self.nom} attaque ! Vous perdez {degats} points de vie.")
+    def take_damage(self):
+        pass
 
-class Objet:
-    def __init__(self, nom, description, utilisable=False):
-        self.nom = nom
-        self.description = description
-        self.utilisable = utilisable
+    def apply_status_effects(self):
+        pass
 
-class Quete:
-    def __init__(self, description, recompense):
-        self.description = description
-        self.recompense = recompense
-        self.complete = False
+    def remove_status_effects(self):
+        pass
 
-    def completer(self, joueur):
-        if not self.complete:
-            self.complete = True
-            joueur.points_de_vie += self.recompense
-            print(f"Quête accomplie ! Vous gagnez {self.recompense} points de vie.")
+    def __str__(self):
+        return f"{self.name} - Points de vie : {self.health}"
 
-class Joueur:
-    def __init__(self, nom):
-        self.nom = nom
-        self.points_de_vie = 10
-        self.objets = []
-        self.quetes = []
-        self.lieu_actuel = None
 
-    def deplacer(self, direction):
-        if direction in self.lieu_actuel.voisins:
-            self.lieu_actuel = self.lieu_actuel.voisins[direction]
-            self.lieu_actuel.afficher_description()
+class Player(Character):
+    def __init__(self, name, health, attack_power):
+        self.inventory = []
+        self.character_budget = 10 #argent du perso
+        super().__init__(name, health, attack_power)
+
+    def add_to_inventory(self, item):
+        self.inventory.append(item)
+
+    def remove_from_inventory(self, item):
+        self.inventory.remove(item)
+
+    def get_inventory(self):
+        if len(self.inventory) == 0:
+            print("votre inventaire est vide")
         else:
-            print("Vous ne pouvez pas aller dans cette direction.")
+            print(f"objet dans votre inventaire :")
+            for objet in self.inventory:
+                print(f"- {objet}")
 
-    def ramasser_objet(self, objet):
-        self.objets.append(objet)
-        print(f"Vous ramassez {objet.nom}.")
+    def save(self):
+        pass #fonction pour sauvegarder la partie a completer
 
-    def afficher_statistiques(self):
-        print(f"\n{self.nom}: {self.points_de_vie} points de vie")
-        if self.objets:
-            print("Objets : " + ", ".join([objet.nom for objet in self.objets]))
 
-# Initialisation du jeu
-def initialiser_jeu():
-    # Lieux
-    village = Lieu("Village", "Un village tranquille avec des maisons en bois.")
-    foret = Lieu("Forêt", "Une forêt dense et mystérieuse.")
-    grotte = Lieu("Grotte", "Une grotte sombre remplie d'échos effrayants.")
+class NPC(Character):
+    def __init__(self, name):
+        self.name = name
+        self.dialogue = []
 
-    village.ajouter_voisin("nord", foret)
-    foret.ajouter_voisin("sud", village)
-    foret.ajouter_voisin("est", grotte)
-    grotte.ajouter_voisin("ouest", foret)
+class Item:
+    def __init__(self, name, damage_power, health_add, slot):
+        self.name = name
+        self.damage_power = damage_power
+        self.health_add = health_add
+        self.slot = slot #la place qu'il prend dans l'inventaire
 
-    # Ennemis
-    loup = Ennemi("Loup", 5)
-    troll = Ennemi("Troll", 8)
-    foret.ennemis.append(loup)
-    grotte.ennemis.append(troll)
+    def equip(self):
+        pass
 
-    # Objets
-    potion = Objet("Potion de vie", "Une potion qui restaure de la vie", utilisable=True)
-    foret.objets.append(potion)
+    def unequip(self):
+        pass
 
-    # Quêtes
-    quete1 = Quete("Trouver une herbe médicinale dans la forêt", recompense=5)
+    def examine(self):
+        pass
 
-    # Joueur
-    joueur = Joueur(nom="Héros")
-    joueur.lieu_actuel = village
-    joueur.quetes.append(quete1)
+    def use(self):
+        pass
 
-    return joueur
+class quest:
+    def __init__(self, rewards, objectif):
+        self.rewards = rewards
+        self.objectif = objectif
+        self.completed = False
 
-# Boucle principale du jeu
-def jouer():
-    joueur = initialiser_jeu()
-    print("Bienvenue dans l'aventure !")
+class Locations:
+    def __init__(self, name):
+        self.name = name
+        self.all_locations = []
+        self.id = 0
 
-    while joueur.points_de_vie > 0:
-        joueur.afficher_statistiques()
-        action = input("\nQue voulez-vous faire ? (explorer, ramasser, utiliser objet, quête, quitter): ").strip().lower()
+    def interact(self, int):
+        pass
 
-        if action == "explorer":
-            direction = input("Dans quelle direction ? (nord, sud, est, ouest): ").strip().lower()
-            joueur.deplacer(direction)
+class TextLibrary:
+    def __init__(self):
+        self.dico_text = []
 
-        elif action == "ramasser":
-            if joueur.lieu_actuel.objets:
-                objet = joueur.lieu_actuel.objets.pop(0)
-                joueur.ramasser_objet(objet)
-            else:
-                print("Aucun objet à ramasser ici.")
+    def display_text(self):
+        pass
 
-        elif action == "utiliser objet":
-            for objet in joueur.objets:
-                if objet.utilisable:
-                    print(f"Vous utilisez {objet.nom} et regagnez des points de vie !")
-                    joueur.points_de_vie += 3
-                    joueur.objets.remove(objet)
-                    break
-            else:
-                print("Aucun objet utilisable dans votre inventaire.")
 
-        elif action == "quête":
-            for quete in joueur.quetes:
-                if not quete.complete:
-                    print(quete.description)
-                    if joueur.lieu_actuel.nom == "Forêt":
-                        quete.completer(joueur)
-                else:
-                    print("Vous avez terminé toutes les quêtes.")
 
-        elif action == "quitter":
-            print("Merci d'avoir joué !")
-            break
+player = Player("Héros", 20, 5)
+enemy = Character("Ennemi", 15, 4)
 
-        else:
-            print("Action non reconnue.")
 
-# Lancer le jeu
-if __name__ == "__main__":
-    jouer()
+while player.isAlive():
+    print("\nQue voulez-vous faire ?")
+    print("1. explorer")
+    print("2. attaquer")
+    print("3. consulter votre inventaire")
+
+    reponse = input("Entrer le numéro de votre choix")
+    if reponse == "1":
+        print("Vers ou voulez-vous aller ? \n Nord, Sud, Est, Ouest")
+        direction = input("Entrer la direction du choix")
+        if direction == "Nord" and "Sud" and "Est" and "Ouest":
+            print("Vous rencontrer un gobelin sur votre chemin, il à l'air de vouloir vous attaquer ! Que faire?")
+            
+
+    if reponse == "2":
+        player.deal_attack(enemy)
+        if enemy.isAlive() :
+            enemy.deal_attack(player)
+    elif reponse == "3":
+        player.get_inventory()
+        
+    else :
+        print("choix invalide")
+
+if player.is_alive():
+    print("\nFélicitations ! Vous avez vaincu l'ennemi.")
+else:
+    print("\nVous avez été vaincu par l'ennemi. Fin de la partie.")
