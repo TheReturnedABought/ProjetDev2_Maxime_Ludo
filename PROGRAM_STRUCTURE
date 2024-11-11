@@ -1,0 +1,11 @@
+├── MVPv1_1.py
+├── LICENCE 
+├── README.md
+└── classes/
+    	├── Character.py
+    	├── Player.py
+    	├── NPC.py
+    	├── Item.py
+    	├── Quest.py
+    	├── Location.py
+    	└── TextLibrary.py
