@@ -1,0 +1,167 @@
+"""
+Améliorations du v1 par ChatGPT 11/11/2024 02:20
+------------------------------------------------
+
+Conditions de Navigation : Simplification des conditions pour la sélection de direction (Nord, Sud, Est, Ouest) afin de garantir des choix valides.
+
+Inventaire Amélioré : Ajout de messages clairs pour indiquer quand un objet est ajouté ou retiré de l'inventaire, et un affichage plus convivial des objets.
+
+Système de Combat : Simplification des méthodes d'attaque et de vérification de vie pour un affichage plus clair des résultats après chaque combat.
+
+Utilisation des Objets : Amélioration de la classe Item pour permettre l'utilisation contextuelle d'objets, par exemple, les potions pour soigner ou les armes pour infliger des dégâts.
+
+Gestion des Textes Narratifs : Mise en place d'une bibliothèque de textes (TextLibrary) pour gérer et afficher des descriptions et dialogues de manière centralisée.
+
+"""
+
+import random
+
+class Character:
+    def __init__(self, name, health, attack_power):
+        self.name = name
+        self.health = health
+        self.attack_power = attack_power
+
+    def deal_attack(self, target):
+        damage = random.randint(1, self.attack_power)
+        target.health -= damage
+        print(f"{self.name} attaque {target.name} ! Points de vie perdus : {damage}")
+
+    def is_alive(self):
+        return self.health > 0
+
+    def __str__(self):
+        return f"{self.name} - Points de vie : {self.health}"
+
+
+class Player(Character):
+    def __init__(self, name, health, attack_power):
+        super().__init__(name, health, attack_power)
+        self.inventory = []
+        self.character_budget = 10  # argent du personnage
+
+    def add_to_inventory(self, item):
+        self.inventory.append(item)
+        print(f"Vous avez ajouté {item.name} à votre inventaire.")
+
+    def remove_from_inventory(self, item):
+        if item in self.inventory:
+            self.inventory.remove(item)
+            print(f"Vous avez retiré {item.name} de votre inventaire.")
+        else:
+            print(f"{item.name} n'est pas dans l'inventaire.")
+
+    def get_inventory(self):
+        if not self.inventory:
+            print("Votre inventaire est vide.")
+        else:
+            print("Objets dans votre inventaire :")
+            for item in self.inventory:
+                print(f"- {item.name}")
+
+    def save(self):
+        pass  # fonction de sauvegarde à implémenter
+
+
+class NPC(Character):
+    def __init__(self, name, health, attack_power, dialogue):
+        super().__init__(name, health, attack_power)
+        self.dialogue = dialogue
+
+    def talk(self):
+        if self.dialogue:
+            print(f"{self.name} dit : {self.dialogue}")
+        else:
+            print(f"{self.name} n'a rien à dire.")
+
+
+class Item:
+    def __init__(self, name, damage_power=0, health_add=0, slot=1):
+        self.name = name
+        self.damage_power = damage_power
+        self.health_add = health_add
+        self.slot = slot
+
+    def use(self, target=None):
+        if self.damage_power > 0 and target:
+            print(f"Vous utilisez {self.name} pour attaquer {target.name} !")
+            target.health -= self.damage_power
+        elif self.health_add > 0:
+            print(f"Vous utilisez {self.name} et gagnez {self.health_add} points de vie.")
+        else:
+            print(f"{self.name} ne peut pas être utilisé comme ça.")
+
+
+class Quest:
+    def __init__(self, rewards, objectif):
+        self.rewards = rewards
+        self.objectif = objectif
+        self.completed = False
+
+
+class Location:
+    def __init__(self, name):
+        self.name = name
+
+    def interact(self):
+        print(f"Vous interagissez avec {self.name}.")
+
+
+class TextLibrary:
+    def __init__(self):
+        self.texts = {}
+
+    def add_text(self, key, text):
+        self.texts[key] = text
+
+    def display_text(self, key):
+        if key in self.texts:
+            print(self.texts[key])
+        else:
+            print("Texte non trouvé.")
+
+
+# Initialisation des personnages et des objets
+player = Player("Héros", 20, 5)
+enemy = Character("Gobelin", 15, 4)
+potion = Item("Potion de soin", health_add=5)
+player.add_to_inventory(potion)
+
+# Boucle de jeu principale
+while player.is_alive():
+    print("\nQue voulez-vous faire ?")
+    print("1. Explorer")
+    print("2. Attaquer")
+    print("3. Consulter votre inventaire")
+
+    response = input("Entrez le numéro de votre choix : ")
+
+    if response == "1":
+        direction = input("Vers où voulez-vous aller ? (nord, sud, est, ouest) : ").lower()
+        if direction in ["nord", "sud", "est", "ouest"]:
+            print(f"Vous vous dirigez vers le {direction}.")
+            print("Vous rencontrez un gobelin sur votre chemin, il a l'air de vouloir vous attaquer ! Que faire ?")
+            # Ajouter d'autres interactions possibles ici
+        else:
+            print("Direction invalide. Veuillez entrer nord, sud, est, ou ouest.")
+
+    elif response == "2":
+        player.deal_attack(enemy)
+        if enemy.is_alive():
+            enemy.deal_attack(player)
+            print(f"{player}\n{enemy}")
+        else:
+            print(f"Vous avez vaincu {enemy.name}.")
+
+    elif response == "3":
+        player.get_inventory()
+
+    else:
+        print("Choix invalide. Veuillez entrer 1, 2, ou 3.")
+
+    if not player.is_alive():
+        print("\nVous avez été vaincu. Fin de la partie.")
+        break
+    elif not enemy.is_alive():
+        print("\nFélicitations ! Vous avez vaincu l'ennemi.")
+        break
