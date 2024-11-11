@@ -1,0 +1,77 @@
+"""
+Améliorations du v1 par ChatGPT 11/11/2024 02:20
+------------------------------------------------
+
+Conditions de Navigation : Simplification des conditions pour la sélection de direction (Nord, Sud, Est, Ouest) afin de garantir des choix valides.
+
+Inventaire Amélioré : Ajout de messages clairs pour indiquer quand un objet est ajouté ou retiré de l'inventaire, et un affichage plus convivial des objets.
+
+Système de Combat : Simplification des méthodes d'attaque et de vérification de vie pour un affichage plus clair des résultats après chaque combat.
+
+Utilisation des Objets : Amélioration de la classe Item pour permettre l'utilisation contextuelle d'objets, par exemple, les potions pour soigner ou les armes pour infliger des dégâts.
+
+Gestion des Textes Narratifs : Mise en place d'une bibliothèque de textes (TextLibrary) pour gérer et afficher des descriptions et dialogues de manière centralisée.
+
+"""
+
+from classes.Character import Character
+from classes.Player import Player
+from classes.NPC import NPC
+from classes.Item import Item
+from classes.Quest import Quest
+from classes.Location import Location
+from classes.TextLibrary import TextLibrary
+
+# Initialisation des personnages et des objets
+player = Player("Héros", 20, 5)
+enemy = Character("Gobelin", 15, 4)
+potion = Item("Potion de soin", health_add=5)
+player.add_to_inventory(potion)
+
+# Initialisation de la bibliothèque de textes
+text_library = TextLibrary()
+text_library.add_text("welcome", "Bienvenue dans le jeu !")
+text_library.add_text("victory", "Félicitations, vous avez vaincu l'ennemi !")
+text_library.add_text("defeat", "Vous avez été vaincu. Fin de la partie.")
+
+# Affichage du texte de bienvenue
+text_library.display_text("welcome")
+
+# Boucle de jeu principale
+while player.is_alive():
+    print("\nQue voulez-vous faire ?")
+    print("1. Explorer")
+    print("2. Attaquer")
+    print("3. Consulter votre inventaire")
+
+    response = input("Entrez le numéro de votre choix : ")
+
+    if response == "1":
+        direction = input("Vers où voulez-vous aller ? (nord, sud, est, ouest) : ").lower()
+        if direction in ["nord", "sud", "est", "ouest"]:
+            print(f"Vous vous dirigez vers le {direction}.")
+            print("Vous rencontrez un gobelin sur votre chemin, il a l'air de vouloir vous attaquer ! Que faire ?")
+            # Ajouter d'autres interactions possibles ici
+        else:
+            print("Direction invalide. Veuillez entrer nord, sud, est, ou ouest.")
+
+    elif response == "2":
+        player.deal_attack(enemy)
+        if enemy.is_alive():
+            enemy.deal_attack(player)
+            print(f"{player}\n{enemy}")
+        else:
+            print(f"Vous avez vaincu {enemy.name}.")
+
+    elif response == "3":
+        player.get_inventory()
+
+    else:
+        print("Choix invalide. Veuillez entrer 1, 2, ou 3.")
+
+    if not player.is_alive():
+        print("\nVous avez été vaincu. Fin de la partie.")
+        break
+    elif not enemy.is_alive():
+        print("\nFélicitations ! Vous avez vaincu l'ennemi.")
+        break
