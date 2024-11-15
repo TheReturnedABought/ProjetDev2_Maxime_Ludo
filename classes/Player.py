@@ -11,7 +11,6 @@ class Player(Character):
         self.inventory.append(item)
 
         """
-        Ajoute un objet désigné à l'inventaire du personnage.
         
         PRE : item est une string représentant un objet physique.
         Post : l'item doit être dans l'inventaire après l'ajout.
@@ -23,7 +22,6 @@ class Player(Character):
         self.inventory.remove(item)
 
         """
-        Enlève un item désigné à l'inventaire du personnage.
         
         PRE : item doit être dans l'inventaire, inventaire.
         POST: item doit avoir disparu de l'inventaire.
@@ -39,7 +37,6 @@ class Player(Character):
                 print(f"| - {objet}")
 
         """
-        Montre l'inventaire à l'écran.
         
         PRE : l'inventaire doit être initialiser et capable de recevoir des items.
         POST: retourne l'inventaire sous forme de liste avec puce.
