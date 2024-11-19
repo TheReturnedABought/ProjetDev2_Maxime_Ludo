@@ -7,7 +7,7 @@ class Item:
 
     def equip(self):
         """
-        PRE: Lobjet doit être dans l'inventaire et ne doit pas être déjà équipé.
+        PRE: Lobjet doit être dans l'inventaire.
         POST: L'objet est marqué comme équipé.
         Raise: Erreur si l'objet est déjà équipé.
 
