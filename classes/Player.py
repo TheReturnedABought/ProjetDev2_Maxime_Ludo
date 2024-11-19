@@ -13,7 +13,7 @@ class Player(Character):
         """
         
         PRE : item est une string représentant un objet physique.
-        Post : l'item doit être dans l'inventaire après l'ajout.
+        POST: l'item est dans l'inventaire après l'ajout.
         
 
         """
@@ -24,8 +24,8 @@ class Player(Character):
 
         """
         
-        PRE : item doit être dans l'inventaire, inventory.
-        POST: item doit avoir disparu de l'inventaire.
+        PRE : L'item que le joueur veut retirer.
+        POST: Renvoie que l'item n'est plus dans l'inventaire.
         RAISE : renvoie une erreur si item n'est pas dans l'inventaire 
         """
 
@@ -40,9 +40,10 @@ class Player(Character):
 
         """
         Montre l'inventaire à l'écran sous forme de liste avec puce.
-        
-        PRE : l'inventaire doit être initialiser et capable de recevoir des items.
+
+        PRE : l'inventaire initialisé.
         POST: retourne l'inventaire sous forme de liste avec puce.
+        RAISE : renvoie "inventaire vide" si l'inventaire est vide
         """
 
 
