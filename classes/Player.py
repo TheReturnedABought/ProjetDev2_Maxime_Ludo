@@ -14,6 +14,7 @@ class Player(Character):
         
         PRE : item est une string représentant un objet physique.
         Post : l'item doit être dans l'inventaire après l'ajout.
+        
 
         """
 
@@ -25,6 +26,7 @@ class Player(Character):
         
         PRE : item doit être dans l'inventaire, inventory.
         POST: item doit avoir disparu de l'inventaire.
+        RAISE : renvoie une erreur si item n'est pas dans l'inventaire 
         """
 
 
