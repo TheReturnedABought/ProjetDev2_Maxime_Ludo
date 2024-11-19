@@ -7,9 +7,9 @@ class Item:
 
     def equip(self):
         """
-        PRE: Lobjet doit être dans l'inventaire.
+        PRE: L'objet que le joueur veux équiper.
         POST: L'objet est marqué comme équipé.
-        Raise: retourne une erreur si l'objet est déjà équipé.
+        Raise: renvoie une erreur si l'objet est déjà équipé ou si il n'y a aucun objet dans l'inventaire.
 
         """
         pass
@@ -17,8 +17,8 @@ class Item:
     def unequip(self):
         """
 
-        PRE: L'objet doit être équipé.
-        POST:L'objet n'est plus marqué comme équipé.
+        PRE: L'objet équipé.
+         POST:L'objet n'est plus marqué comme équipé.
         RAISE: RunTimeError si l'objet n'est pas équipé.
         """
         pass
