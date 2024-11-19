@@ -9,7 +9,7 @@ class Item:
         """
         PRE: Lobjet doit être dans l'inventaire.
         POST: L'objet est marqué comme équipé.
-        Raise: Erreur si l'objet est déjà équipé.
+        Raise: retourne une erreur si l'objet est déjà équipé.
 
         """
         pass
