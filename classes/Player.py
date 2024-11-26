@@ -11,6 +11,7 @@ class Player(Character):
         self.inventory.append(item)
 
         """
+        Ajoute dans l'inventaire (liste) "item" qui est une string
         
         PRE : item est une string représentant un objet physique.
         POST: l'item est dans l'inventaire après l'ajout.
@@ -23,6 +24,7 @@ class Player(Character):
         self.inventory.remove(item)
 
         """
+        Enlève de l'inventaire (liste) "item" qui est un string
         
         PRE : L'item que le joueur veut retirer.
         POST: Renvoie que l'item n'est plus dans l'inventaire.
@@ -39,10 +41,10 @@ class Player(Character):
                 print(f"| - {objet}")
 
         """
-        Montre l'inventaire à l'écran sous forme de liste avec puce.
+        prend la liste 'inventory' et la transmet à une fonction show_inventory
 
         PRE : l'inventaire initialisé.
-        POST: retourne l'inventaire sous forme de liste avec puce.
+        POST: retourne l'inventaire 
         RAISE : renvoie "inventaire vide" si l'inventaire est vide
         """
 
