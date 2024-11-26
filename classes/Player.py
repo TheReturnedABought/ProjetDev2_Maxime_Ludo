@@ -33,19 +33,15 @@ class Player(Character):
 
 
     def get_inventory(self):
-        if len(self.inventory) == 0:
-            print("| Votre inventaire est vide.")
-        else:
-            print(f"| Objet(s) dans votre inventaire :")
-            for objet in self.inventory:
-                print(f"| - {objet}")
+        if not isinstance(self.inventory, list):
+        raise ValueError("L'inventaire n'est pas initialisé correctement.")
 
-        """
-        prend la liste 'inventory' et la transmet à une fonction show_inventory
+       """
+        prend la liste "inventory" et la transmet à une fonction "show_inventory"
 
         PRE : l'inventaire initialisé.
-        POST: retourne l'inventaire 
-        RAISE : renvoie "inventaire vide" si l'inventaire est vide
+        POST: retourne l'appel à la fonction show_inventory(self.inventory).
+        Raise : si l'inventaire n'a pas été initialisé correctement : renvoie ValueError
         """
 
 
