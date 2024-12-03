@@ -1,10 +1,10 @@
 class Item:
-    def __init__(self, name, damage_power, health_add, slot):
+    def __init__(self, name, damage_power, health_add, slot, equiped = False):
         self.name = name
         self.damage_power = damage_power
         self.health_add = health_add
         self.slot = slot #la place qu'il prend dans l'inventaire
-
+        self.equiped = equiped
     def equip(self):
         """
        "équipe" l'item, le marque comme "dans la main" du joueur.
