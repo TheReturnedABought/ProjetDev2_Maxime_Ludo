@@ -19,7 +19,8 @@ visited_places = {
     "cuisine": False
 }
 
-#Partie logique
+
+# Partie logique
 
 def equip_item(player):
     print("Quel objet voulez-vous équiper ?")
@@ -32,7 +33,8 @@ def equip_item(player):
         player.equip(item)  # Assuming an equip method in Player class
         print(f"{item.name} est maintenant équipé !")
 
-#fonction à appeler quand il y a un combat
+
+# fonction à appeler quand il y a un combat
 def combat(player, enemy):
     print(f"\nUne tension palpable emplit l'air. {enemy.name} se dresse devant vous, prêt à en découdre.")
     print(f"\n{enemy.name}: {enemy.health} PV | Vous: {player.health} PV")
@@ -63,7 +65,8 @@ def combat(player, enemy):
             print("\nVous tournez les talons et fuyez, le cœur battant.")
             return False
 
-#fonction pour montrer l'inventaire
+
+# fonction pour montrer l'inventaire
 def show_inventory(inventory):
     if not inventory:
         print("\nVotre inventaire est vide. Peut-être devriez-vous explorer davantage...")
@@ -89,30 +92,29 @@ def show_inventory(inventory):
         print("Vous refermez votre sac et vous préparez à continuer l'aventure.")
 
 
-
-
-
-
-#début du jeu
+# début du jeu
 def introScene(player):
-  directions = ["forward"]
-  print("L'entrée d'ou vous venez est bloqué, il faut trouver un autre moyen de sortir ! Par ou aller vous ?")
-  userInput = ""
-  while userInput not in directions:
-    print("Options: forward")
-    userInput = input()
-    if userInput == "forward":
-      salleBuffet(player)
-    elif userInput == "backward":
-      print("L'entrée du chateau est bloqué")
-    else:
-      print("Please enter a valid option for the adventure game.")
+    directions = ["forward"]
+    print("L'entrée d'ou vous venez est bloqué, il faut trouver un autre moyen de sortir ! Par ou aller vous ?")
+    userInput = ""
+    while userInput not in directions:
+        print("Options: forward")
+        userInput = input()
+        if userInput == "forward":
+            salleBuffet(player)
+        elif userInput == "backward":
+            print("L'entrée du chateau est bloqué")
+        else:
+            print("Please enter a valid option for the adventure game.")
 
-#fonction à appeler quand on va dans la salle de buffet
+
+# fonction à appeler quand on va dans la salle de buffet
 def salleBuffet(player):
-    print("\nVous entrez dans une salle opulente, ornée de lustres étincelants et de longues tables chargées de vaisselle dorée.")
+    print(
+        "\nVous entrez dans une salle opulente, ornée de lustres étincelants et de longues tables chargées de vaisselle dorée.")
     print("Chaque coin de la pièce semble suinter la richesse, mais un étrange silence règne, presque oppressant.")
-    print("\nVotre regard est attiré par une fiole posée négligemment sur une table. Un liquide rouge y tourbillonne mystérieusement.")
+    print(
+        "\nVotre regard est attiré par une fiole posée négligemment sur une table. Un liquide rouge y tourbillonne mystérieusement.")
     potion = Item("Potion de vie", 0, 5)
     player.add_to_inventory(potion)
     print("\nVous avez trouvé une potion de vie ! Elle pourrait vous être utile plus tard.")
@@ -136,7 +138,8 @@ def salleBuffet(player):
         else:
             print("Veuillez entrer une option valide.")
 
-#fonction à appeler quand on va dans la cuisine
+
+# fonction à appeler quand on va dans la cuisine
 def cuisine(player):
     """
     Scène immersive dans la cuisine avec un combat
@@ -185,7 +188,6 @@ def cuisine(player):
         salleBuffet(player)
 
 
-
 def couloir1(player):
     print(
         "Vous entrez dans un couloir sombre et lugubre. Les murs sont ornés de portraits anciens, mais quelque chose cloche.")
@@ -224,7 +226,8 @@ def couloir1(player):
         print("\nVoici les tableaux dans leur état actuel :")
         print(", ".join([f"{t} (désaligné)" for t in tableaux]))
 
-        print("\nDans quel ordre voulez-vous réaligner les tableaux ? (Entrez les numéros séparés par des espaces, ex: '3 1 4 2')")
+        print(
+            "\nDans quel ordre voulez-vous réaligner les tableaux ? (Entrez les numéros séparés par des espaces, ex: '3 1 4 2')")
         try:
             choix = input("> ")
             essais = list(map(int, choix.split()))
@@ -235,7 +238,8 @@ def couloir1(player):
         tentatives += 1
 
         if essais == solution:
-            print("\nVous réalignez les tableaux dans le bon ordre. Un clic mécanique résonne, et une partie du mur coulisse lentement pour révéler un coffre secret.")
+            print(
+                "\nVous réalignez les tableaux dans le bon ordre. Un clic mécanique résonne, et une partie du mur coulisse lentement pour révéler un coffre secret.")
             print(f"Vous avez résolu l'énigme en {tentatives} tentatives !")
             print("Vous ouvrez le coffre et découvrez une épée!")
             epee = Item("épée", 8, 0)
@@ -253,6 +257,7 @@ def couloir1(player):
     # À la fin de l'énigme, ou si l'énigme n'est pas résolue, demander où aller
     choix_direction(player)
 
+
 def choix_direction(player):
     """
     Permet de choisir où aller après l'énigme.
@@ -267,27 +272,35 @@ def choix_direction(player):
             salleMort(player)
         elif userInput == "backward":
             salleBuffet(player)
-            
+
         elif userInput == "right":
             print("\nVous tournez à droite...")
-            chambre(player)
+            cave(player)
 
 
 def bibli(player):
     """
     Scène de la bibliothèque avec rencontre d'un fantôme et un avertissement pour éviter de mourir ici.
     """
-    print("\nVous poussez lentement la porte en bois massive de la bibliothèque. L'air à l'intérieur est lourd et poussiéreux.")
-    print("Des rayonnages immenses s'étendent à perte de vue, remplis de livres anciens, certains à peine lisibles à cause de l'usure du temps.")
-    print("L'odeur du vieux papier et du bois vieilli emplit vos narines. La pièce semble abandonnée depuis des siècles.")
-    print("\nSoudain, un frisson vous parcourt l'échine. Vous apercevez une silhouette translucide, presque éthérée, flottant devant une étagère.")
+    print(
+        "\nVous poussez lentement la porte en bois massive de la bibliothèque. L'air à l'intérieur est lourd et poussiéreux.")
+    print(
+        "Des rayonnages immenses s'étendent à perte de vue, remplis de livres anciens, certains à peine lisibles à cause de l'usure du temps.")
+    print(
+        "L'odeur du vieux papier et du bois vieilli emplit vos narines. La pièce semble abandonnée depuis des siècles.")
+    print(
+        "\nSoudain, un frisson vous parcourt l'échine. Vous apercevez une silhouette translucide, presque éthérée, flottant devant une étagère.")
     print("C'est un fantôme, un esprit qui semble perdu dans le temps. Il vous regarde, comme s'il vous attendait.")
     print("\nLe fantôme se tourne vers vous et, d'une voix grave mais douce, il commence à parler :")
-    print("\"Je suis l'âme du dernier propriétaire de ce château, un érudit obsédé par la connaissance. Jadis, je suis mort ici, seul et oublié, pris au piège des ombres de ce lieu maudit.\"")
-    print("Le fantôme s'approche lentement, ses traits se précisant, et vous pouvez presque voir des larmes briller dans ses yeux.")
-    print("\"Je suis resté prisonnier de ces murs, piégé par mes erreurs. Ne fais pas la même chose, aventurier. Ne meurs pas ici comme moi. Ce château te réclame, mais il est aussi une prison.\"")
+    print(
+        "\"Je suis l'âme du dernier propriétaire de ce château, un érudit obsédé par la connaissance. Jadis, je suis mort ici, seul et oublié, pris au piège des ombres de ce lieu maudit.\"")
+    print(
+        "Le fantôme s'approche lentement, ses traits se précisant, et vous pouvez presque voir des larmes briller dans ses yeux.")
+    print(
+        "\"Je suis resté prisonnier de ces murs, piégé par mes erreurs. Ne fais pas la même chose, aventurier. Ne meurs pas ici comme moi. Ce château te réclame, mais il est aussi une prison.\"")
     print("Il semble profondément triste, mais continue :")
-    print("\"Il y a une issue, mais elle est bien cachée. Prends le chemin à droite, et lorsque tu arriveras au portrait du roi, tourne à droite. Suis ce chemin avec prudence, car des pièges se cachent dans l'ombre.\"")
+    print(
+        "\"Il y a une issue, mais elle est bien cachée. Prends le chemin à droite, et lorsque tu arriveras au portrait du roi, tourne à droite. Suis ce chemin avec prudence, car des pièges se cachent dans l'ombre.\"")
     print("\"Va, vite, et échappe à ce destin funeste. Le temps est compté.\"")
     print("\nLe fantôme disparaît lentement dans un éclat de lumière pâle, laissant derrière lui un silence lourd.")
     print("Vous sentez que l'atmosphère de la bibliothèque a changé, mais un lourd pressentiment demeure.")
@@ -308,14 +321,69 @@ def bibli(player):
         elif userInput == "inventaire":
             player.get_inventory()  # Voir l'inventaire
 
+def cave(player):
+    print("Vous entrez dans une cave sombre et mystérieuse. Devant vous se dresse une statue imposante d'un sphinx.")
+    print("Son regard perçant semble suivre chacun de vos mouvements.")
+    print("\nSoudain, une voix grave résonne dans l'air :")
+    print('"Où allez-vous en cette heure si tardive ?"\n')
+    print("Vous ne voyez pas d'où provient la voix, mais elle dégage une telle autorité que vous en tremblez.")
+    print('"Si vous souhaitez avancer, vous devez répondre à mes trois énigmes."\n')
+
+    enigmes = [
+        {
+            "question": "Je colle éternellement et rien n'empêchera mon arrivée. Tout me fuit, mais tout passe en moi. Qui suis-je ?",
+            "reponse": ["le temps", "temps"],
+            "effet": "Les murs autour de vous semblent vieillir et se fissurer, comme si des siècles s'étaient écoulés en un instant."
+        },
+        {
+            "question": "Petit, je donne du plaisir, mais grand, je détruis des villes. Mon amour est la lune, et mon désir est la mer. Qui suis-je ?",
+            "reponse": ["les vagues", "vague", "une vague"],
+            "effet": "Une goutte froide tombe sur votre épaule depuis le plafond, et un bruit d'eau se fait entendre au loin."
+        },
+        {
+            "question": "Je brûle comme le feu ou je mijote sous la peau. Je vise la justice, mais souvent, je suis trompeuse. Qui suis-je ?",
+            "reponse": ["la colère", "colère"],
+            "effet": "Les murs s'effondrent soudainement, et une masse d'eau vous emporte avec violence vers une grotte sombre."
+        }
+    ]
+
+    for i, enigme in enumerate(enigmes, start=1):
+        print(f"\nÉnigme {i} :")
+        print(f'"{enigme["question"]}"\n')
+
+        tentative = input("> ").strip().lower()
+        if tentative in enigme["reponse"]:
+            print("\nBonne réponse !")
+            print(enigme["effet"])
+        else:
+            print("\nMauvaise réponse...")
+            print("La statue reste immobile, mais vous sentez la tension monter dans l'air.")
+            print("Vous devez retenter votre chance pour continuer.")
+            return  # Fin de la scène en cas d'échec.
+
+    print("\nVotre réponse semble déclencher quelque chose d'irréversible. Les murs tremblent, puis s’effondrent brusquement. \nUne masse d’eau vive jaillit des décombres et vous emporte avec une force inouïe. Incapable de lutter, vous êtes propulsé dans une grotte sombre et profonde. \nLes remous violents vous poussent contre les parois rocheuses, et vous vous retrouvez haletant sur une plage de sable noir, à l'intérieur de cette mystérieuse caverne.")
+
+    print("\nUn seul chemins s'offrent à vous :")
+    print("Un passage éclairé par une faible lumière.")
+
+    directions = ["left", "right", "forward", "backward"]
+    userInput = ""
+    while userInput not in directions:
+        print("Options: forward ou inventaire")
+        userInput = input()
+        if userInput == "forward":
+            cuisine(player)
+
 
 def chambre(player):
     pass;
 
+
 def salleMort(player):
     pass
 
-#fonction qui lance le jeu
+
+# fonction qui lance le jeu
 def main():
     """
     Fonction principale du jeu
@@ -336,6 +404,7 @@ def main():
 
     # Commencer le jeu
     introScene(player)
+
 
 if __name__ == "__main__":
     main()
