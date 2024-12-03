@@ -41,7 +41,6 @@ class Player(Character):
 
         PRE : l'inventaire initialisé.
         POST: retourne l'appel à la fonction show_inventory(self.inventory).
-        Raise : si l'inventaire n'a pas été initialisé correctement : renvoie ValueError
         """
 
 
