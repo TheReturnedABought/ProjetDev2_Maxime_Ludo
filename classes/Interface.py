@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from Narator import NaratorFunc
 
 class Interface:
     def __init__(self):
@@ -63,8 +64,8 @@ class InterfaceGUI(BoxLayout):
         input_text = self.input_field.text
         self.interface.set_stdin(input_text)
 
-        # Simulate processing (example: echo back the input)
-        output_text = f"You entered: {input_text}"
+        # process the data
+        output_text = NaratorFunc(input_text)
         self.interface.set_stdout(output_text)
 
         # Display the output
