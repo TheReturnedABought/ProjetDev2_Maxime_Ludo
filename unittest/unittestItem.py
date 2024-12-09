@@ -1,4 +1,5 @@
 import unittest
+from Item import Item
 
 class TestItem(unittest.TestCase):
     def setUp(self):
