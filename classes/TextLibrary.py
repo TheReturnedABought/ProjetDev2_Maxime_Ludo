@@ -3,4 +3,4 @@ class TextLibrary:
         self.dico_text = []
 
     def display_text(self):
-        pass
+        return "text that need to return"
