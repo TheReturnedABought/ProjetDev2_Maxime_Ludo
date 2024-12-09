@@ -41,16 +41,16 @@ class Player(Character):
 
         PRE : l'inventaire initialisé.
         POST: retourne l'appel à la fonction show_inventory(self.inventory).
-        """
-        return self.inventory
+        """    
+        return self.show_inventory(self.inventory)
 
-    def show_inventory(self, inventory = []):
+    def show_inventory(self, inventory):
         """
         Cette fonction affiche le contenu de l'inventaire.
         PRE : 'inventory' est une liste.
         POST: Retourne une représentation textuelle de l'inventaire.
         """
-        if inventory == []:
+        if not inventory:
             return "L'inventaire est vide."
         return f"Inventaire : {', '.join(map(str, inventory))}"
         
