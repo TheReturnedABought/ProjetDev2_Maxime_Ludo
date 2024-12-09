@@ -44,7 +44,7 @@ class Player(Character):
         """
         return self.inventory
 
-    def show_inventory(self, inventory):
+    def show_inventory(self, inventory = None):
         """
         Cette fonction affiche le contenu de l'inventaire.
         PRE : 'inventory' est une liste.
