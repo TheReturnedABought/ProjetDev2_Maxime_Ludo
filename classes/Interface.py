@@ -37,34 +37,78 @@ class InterfaceGUI(BoxLayout):
         super().__init__(**kwargs)
         self.interface = interface
         self.orientation = "vertical"
+        self.spacing = 10
+        self.padding = 10
 
-        # Output display
-        self.output_label = Label(text="Output:", size_hint=(1, 0.1))
+        # Output section with a ScrollView
+        self.output_label = Label(
+            text="Output:",
+            size_hint=(1, 0.05),
+            halign="left",
+            valign="middle",
+            font_size=18,
+        )
         self.add_widget(self.output_label)
 
+        self.output_scroll = ScrollView(size_hint=(1, 0.4))
         self.output_display = TextInput(
-            text="", size_hint=(1, 0.3), readonly=True, multiline=True
+            text="",
+            size_hint_y=None,
+            height=300,
+            readonly=True,
+            multiline=True,
+            font_size=16,
+            background_color=(0.9, 0.9, 0.9, 1),
+            foreground_color=(0, 0, 0, 1),
         )
-        self.add_widget(self.output_display)
+        self.output_scroll.add_widget(self.output_display)
+        self.add_widget(self.output_scroll)
 
-        # Input field
-        self.input_label = Label(text="Input:", size_hint=(1, 0.1))
+        # Input section
+        self.input_label = Label(
+            text="Input:",
+            size_hint=(1, 0.05),
+            halign="left",
+            valign="middle",
+            font_size=18,
+        )
         self.add_widget(self.input_label)
 
-        self.input_field = TextInput(hint_text="Enter command...", size_hint=(1, 0.1))
+        self.input_field = TextInput(
+            hint_text="Enter command...",
+            size_hint=(1, 0.1),
+            font_size=16,
+            multiline=False,
+            background_color=(0.95, 0.95, 1, 1),
+        )
+        self.input_field.bind(on_text_validate=self.on_enter_key)  # Bind Enter key event
         self.add_widget(self.input_field)
 
-        # Submit button
-        self.submit_button = Button(text="Submit", size_hint=(1, 0.1))
+        # Buttons section
+        self.buttons_layout = BoxLayout(size_hint=(1, 0.1), spacing=10)
+        self.submit_button = Button(
+            text="Submit", size_hint=(0.5, 1), font_size=16, background_color=(0, 0.5, 1, 1)
+        )
         self.submit_button.bind(on_press=self.submit_input)
-        self.add_widget(self.submit_button)
+
+        self.clear_button = Button(
+            text="Clear Output",
+            size_hint=(0.5, 1),
+            font_size=16,
+            background_color=(1, 0.5, 0, 1),
+        )
+        self.clear_button.bind(on_press=self.clear_output)
+
+        self.buttons_layout.add_widget(self.submit_button)
+        self.buttons_layout.add_widget(self.clear_button)
+        self.add_widget(self.buttons_layout)
 
     def submit_input(self, instance):
         """Handle input submission."""
         input_text = self.input_field.text
         self.interface.set_stdin(input_text)
 
-        # process the data
+        # Process the input using NaratorFunc
         output_text = NaratorFunc(input_text)
         self.interface.set_stdout(output_text)
 
@@ -77,6 +121,14 @@ class InterfaceGUI(BoxLayout):
     def update_output(self, text):
         """Update the output display."""
         self.output_display.text += text + "\n"
+
+    def clear_output(self, instance):
+        """Clear the output display."""
+        self.output_display.text = ""
+
+    def on_enter_key(self, instance):
+        """Handle Enter key press."""
+        self.submit_input(instance)
 
 class TextAdventureApp(App):
     def build(self):
