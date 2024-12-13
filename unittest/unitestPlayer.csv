@@ -1,0 +1,7 @@
+Test Name,Parameters Tested,Expected Result,Additional Information
+"test_add_to_inventory","self.player: name='TestPlayer', health=100, attack_power=10, inventory=[]; item='Sword'","inventory contains 'Sword'; inventory length = 1","Adding an item appends it to the inventory."
+"test_remove_from_inventory","self.player: name='TestPlayer', health=100, attack_power=10, inventory=['Shield']; item='Shield'","inventory does not contain 'Shield'; inventory length = 0","Removing an item deletes it from the inventory."
+"test_remove_from_inventory_not_found","self.player: name='TestPlayer', health=100, attack_power=10, inventory=['Potion']; item='Elixir'","Raises ValueError","Attempting to remove a non-existent item raises an exception."
+"test_get_inventory","self.player: name='TestPlayer', health=100, attack_power=10, inventory=['Bow', 'Arrow']","Inventory display = 'Inventaire : Bow, Arrow'","Items in inventory are displayed as a comma-separated string."
+"test_get_inventory_empty","self.player: name='TestPlayer', health=100, attack_power=10, inventory=[]","Inventory display = "L'inventaire est vide."","Empty inventory is displayed appropriately."
+"test_get_inventory_invalid_type","self.player: name='TestPlayer', health=100, attack_power=10, inventory='Not a list'","Raises ValueError","Invalid inventory type raises an exception."
