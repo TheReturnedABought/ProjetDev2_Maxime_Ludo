@@ -1,0 +1,12 @@
+Test Name,Parameters Tested,Expected Result,Additional Information
+"test_deal_attack","self.character: name='Hero', health=10, attack_power=5; self.target: name='Enemy', health=10, attack_power=3; random.randint: 3","self.target.health = 7; self.target.is_alive() = True","Attack reduces target's health correctly. Simulated damage = 3."
+"test_is_alive","self.character.health = 10","is_alive() = True","Character with positive health is alive."
+"test_is_alive","self.character.health = 0","is_alive() = False","Character with 0 health is not alive."
+"test_heal","self.character.health = 5, heal_amount = 3","self.character.health = 8","Healing adds to character's health."
+"test_heal_full_health","self.character.health = 10, heal_amount = 5","self.character.health = 15","Healing adds to character's health beyond initial."
+"test_heal_dead_character","self.character.health = 0, heal_amount = 5","self.character.health = 0","Healing has no effect on dead character."
+"test_take_damage","self.character.health = 10, damage_amount = 3","self.character.health = 7","Damage decreases character's health."
+"test_take_damage_lethal","self.character.health = 10, damage_amount = 15","self.character.health = -5; self.character.is_alive() = False","Lethal damage reduces health below 0 and kills character."
+"test_apply_status_effects","self.character.status_effects = []; status_effect = 'poisoned'","status_effects contains 'poisoned'","Status effect is added to the character's status effects."
+"test_remove_status_effects","self.character.status_effects = ['poisoned']; status_effect = 'poisoned'","status_effects does not contain 'poisoned'","Status effect is removed from the character's status effects."
+"test_remove_nonexistent_status_effect","self.character.status_effects = []; status_effect = 'stunned'","status_effects does not contain 'stunned'","Removing a nonexistent status effect has no impact."
