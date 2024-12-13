@@ -1,0 +1,6 @@
+Test Name,Parameters Tested,Expected Result,Additional Information
+"test_equip","self.sword: name='Sword', damage_power=10, health_add=0, slot='main', equiped=False","self.sword.equiped = True","Equipping the sword sets 'equiped' to True."
+"test_equip_already_equipped","self.sword: name='Sword', damage_power=10, health_add=0, slot='main', equiped=True","Raises RuntimeError","Equipping an already equipped item raises an exception."
+"test_equip_no_slot","item_no_slot: name='Invalid', damage_power=0, health_add=0, slot=None, equiped=False","Raises RuntimeError","Equipping an item with no valid slot raises an exception."
+"test_unequip","self.sword: name='Sword', damage_power=10, health_add=0, slot='main', equiped=True","self.sword.equiped = False; self.sword.slot = None","Unequipping sets 'equiped' to False and clears the slot."
+"test_unequip_not_equipped","self.sword: name='Sword', damage_power=10, health_add=0, slot='main', equiped=False","Raises RuntimeError","Unequipping an item not equipped raises an exception."
