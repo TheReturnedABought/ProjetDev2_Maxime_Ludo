@@ -1,0 +1,15 @@
+class Enigme:
+    def __init__(self, question, answers, reward=None):
+        self.question = question
+        self.answers = answers
+        self.reward = reward
+
+    def attempt(self):
+        print(self.question)
+        answer = input("> ").strip().lower()
+        if answer in self.answers:
+            print("Bonne réponse !")
+            return self.reward
+        else:
+            print("Mauvaise réponse.")
+            return None
