@@ -1,8 +1,12 @@
 class Location:
-    def __init__(self, name):
+    def __init__(self, name, description, visited=False):
         self.name = name
-        self.all_locations = []
-        self.id = 0
+        self.description = description
+        self.visited = visited
 
-    def interact(self, int):
-        pass
+    def visit(self):
+        if not self.visited:
+            print(self.description)
+            self.visited = True
+        else:
+            print(f"Vous êtes déjà passé(e) par {self.name}.")
