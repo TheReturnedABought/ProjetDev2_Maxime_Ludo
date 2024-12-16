@@ -68,7 +68,73 @@ def cuisine(player):
     print("Vous entrez dans la cuisine.")
 
 def couloir1(player):
-    print("Vous entrez dans le couloir 1.")
+    """
+    Creates the Couloir 1 location with a puzzle and item reward.
+    """
+    couloir_description = (
+        "Vous entrez dans un couloir sombre et lugubre. Les murs sont ornés de portraits anciens, mais quelque chose cloche. "
+        "Les tableaux sont mal alignés et un étrange frisson parcourt votre échine."
+        "\n\nVous remarquez un vieux livre posé à terre. La couverture semble usée, mais le titre est encore lisible : 'L'Ordre des Âges'."
+        "\nEn levant les yeux, vous remarquez que les tableaux représentent :"
+        "\n1. Un enfant avec un jouet"
+        "\n2. Un roi en pleine gloire"
+        "\n3. Un vieillard tenant une canne"
+        "\n4. Un guerrier avec une épée"
+        "\n\nUne phrase du livre attire votre attention : "
+        "\"Dans le grand cycle, l'enfant vient avant le guerrier, mais après le vieillard. Le roi se tient toujours entre eux.\""
+    )
+
+    def solve_puzzle(player):
+        """Handles the puzzle of Couloir 1."""
+        tableaux = ["Tableau 1", "Tableau 2", "Tableau 3", "Tableau 4"]
+        solution = [3, 1, 4, 2]  # Correct order for the portraits
+        attempts = []
+        tries = 0
+
+        print("\nVous sentez que réaligner les tableaux dans le bon ordre pourrait révéler quelque chose de caché.")
+
+        while attempts != solution:
+            print("\nVoici les tableaux dans leur état actuel :")
+            print(", ".join([f"{t} (désaligné)" for t in tableaux]))
+
+            print("\nDans quel ordre voulez-vous réaligner les tableaux ? (Entrez les numéros séparés par des espaces, ex: '3 1 4 2')")
+            try:
+                user_input = input("> ")
+                attempts = list(map(int, user_input.split()))
+            except ValueError:
+                print("Veuillez entrer uniquement des chiffres.")
+                continue
+
+            tries += 1
+
+            if attempts == solution:
+                print(
+                    "\nVous réalignez les tableaux dans le bon ordre. Un clic mécanique résonne, et une partie du mur coulisse lentement pour révéler un coffre secret."
+                )
+                print(f"Vous avez résolu l'énigme en {tries} tentative(s) !")
+                print("Vous ouvrez le coffre et découvrez une épée !")
+                sword = Item("Épée", 8, 0)
+                player.add_to_inventory(sword)
+                visited_places["couloir"] = True
+                break
+            elif len(attempts) != len(solution):
+                print("\nVous n'avez pas aligné tous les tableaux.")
+            else:
+                print("\nL'ordre semble incorrect. Les tableaux restent désalignés.")
+
+        if tries > 5:
+            print("\nVous commencez à vous demander si vous n'avez pas manqué un indice quelque part.")
+
+    couloir_actions = {
+        "solve_puzzle": solve_puzzle,
+        "backward": salleBuffet,
+        "right": cave,
+        "forward": salleMort
+    }
+
+    couloir1_location = Location("Couloir 1", couloir_description, couloir_actions)
+    couloir1_location.visit(player)
+
 
 def bibli(player):
     print("Vous entrez dans la bibliothèque.")
