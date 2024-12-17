@@ -33,15 +33,14 @@ class Player(Character):
 
 
     def get_inventory(self):
-        if not isinstance(self.inventory, list):
-            raise ValueError("L'inventaire n'est pas initialisé correctement.")
-
-       """
+        """
         prend la liste "inventory" et la transmet à une fonction "show_inventory"
 
         PRE : l'inventaire initialisé.
         POST: retourne l'appel à la fonction show_inventory(self.inventory).
-        """    
+        """
+        if not isinstance(self.inventory, list):
+            raise ValueError("L'inventaire n'est pas initialisé correctement.")
         return self.show_inventory(self.inventory)
 
     def show_inventory(self, inventory):
