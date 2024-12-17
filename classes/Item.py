@@ -1,8 +1,8 @@
 class Item:
-    def __init__(self, name, damage_power, health_add, slot, equiped = False):
+    def __init__(self, name, _damage_power, _health_add, slot, equiped = False):
         self.name = name
-        self.damage_power = damage_power
-        self.health_add = health_add
+        self._damage_power = _damage_power
+        self._health_add = _health_add
         self.slot = slot #la place qu'il prend dans l'inventaire
         self.equiped = equiped
     def equip(self):
