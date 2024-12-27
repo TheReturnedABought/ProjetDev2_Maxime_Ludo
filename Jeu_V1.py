@@ -10,14 +10,15 @@ from classes.NPC import NPC
 from classes.Item import Item
 import classes.Location
 import classes.TextLibrary
+from classes.narrator import NaratorFunc
 
 visited_places = {
     "salle_buffet": False,
     "cuisine": False,
-    "bibli" : False,
-    "couloir" : False,
-    "cave" : False,
-    "couloirCaverne" : False
+    "bibli": False,
+    "couloir": False,
+    "cave": False,
+    "couloirCaverne": False
 }
 
 
@@ -70,13 +71,11 @@ def combat(player, enemy):
 # fonction pour montrer l'inventaire
 def show_inventory(inventory):
     if not inventory:
-        print("\nVotre inventaire est vide. Peut-être devriez-vous explorer davantage...")
+
         return
 
-    print("\nVous ouvrez votre sac et inspectez vos possessions :")
     for item in inventory:
         print(f"- {item}")
-
     actions = ["équiper", "déséquiper", "utiliser", "quitter"]
     user_action = ""
     while user_action not in actions:
@@ -111,20 +110,11 @@ def introScene(player):
 
 # fonction à appeler quand on va dans la salle de buffet
 def salleBuffet(player):
-    print(
-        "\nVous entrez dans une salle opulente, ornée de lustres étincelants et de longues tables chargées de vaisselle dorée.")
-    print("Chaque coin de la pièce semble suinter la richesse, mais un étrange silence règne, presque oppressant.")
-    print(
-        "\nVotre regard est attiré par une fiole posée négligemment sur une table. Un liquide rouge y tourbillonne mystérieusement.")
     potion = Item("Potion de vie", 0, 5)
     player.add_to_inventory(potion)
-    print("\nVous avez trouvé une potion de vie ! Elle pourrait vous être utile plus tard.")
 
     directions = ["left", "right", "forward", "backward"]
-    print("\nPar où voulez-vous aller ? Que voulez-vous faire ?")
-
     while True:
-        print("Options : left/right/backward/forward ou inventaire")
         userInput = input("> ").strip().lower()
         if userInput == "left":
             cuisine(player)
@@ -137,7 +127,7 @@ def salleBuffet(player):
         elif userInput == "inventaire":
             player.get_inventory()
         else:
-            print("Veuillez entrer une option valide.")
+
 
 
 # fonction à appeler quand on va dans la cuisine
@@ -146,36 +136,26 @@ def cuisine(player):
     Scène immersive dans la cuisine avec un combat
     """
     if visited_places["cuisine"]:
-        print("\nVous retournez dans la cuisine. Elle est désormais silencieuse et vide.")
-        print("Le sol est encore marqué par les traces du combat précédent.")
         salleBuffet(player)
 
     visited_places["cuisine"] = True
 
-    print("\nVous poussez une porte grinçante et entrez dans ce qui semble être une cuisine.")
-    print("L'odeur de nourriture rance flotte dans l'air, mélangée à celle de bois brûlé.")
-    print("Des étagères croulent sous des ustensiles rouillés, et un chaudron abandonné repose au centre.")
-    print("\nAlors que vous vous avancez prudemment, une ombre furtive surgit !")
-    print("Un gobelin malingre, armé d'un couteau de cuisine rouillé, vous bloque le passage.")
-    print(f"Le gobelin montre les crocs et crie : 'Personne ne vole MES provisions !'")
+    #ancien print
 
     # Création de l'ennemi
     enemy = Character("Gobelin", health=15, attack_power=3)
 
     # Lancer le combat
     if combat(player, enemy):  # Si le combat est gagné
-        print("\nAprès un combat acharné, le gobelin s'effondre en grognant. Le calme revient dans la pièce.")
-        print("Vous explorez rapidement la cuisine et trouvez des provisions et un couteau de cuisine.")
+
         couteau = Item("Couteau de cuisine", 5, 0)
         provisions = Item("Provisions", 0, 5)
         player.add_to_inventory(provisions)
         player.add_to_inventory(couteau)
-        print("\nVous ajoutez les provisions et le couteau à votre inventaire.")
 
         directions = ["backward"]
         while True:
-            print("\nQue voulez-vous faire maintenant ?")
-            print("Options : backward / inventaire")
+
             userInput = input("> ").strip().lower()
             if userInput == "backward":
                 print("\nVous quittez la cuisine et retournez dans la salle du buffet.")
@@ -190,33 +170,20 @@ def cuisine(player):
 
 
 def couloir1(player):
+    if visited_places["couloir"] == True:
+        pass;
 
-    if visited_places["couloir"] == True :
-        print("Juste le couloir vide ou vous avez résolu les énigmes")
-    else :
-        print(
-            "Vous entrez dans un couloir sombre et lugubre. Les murs sont ornés de portraits anciens, mais quelque chose cloche.")
-        print("Les tableaux sont mal alignés et un étrange frisson parcourt votre échine.")
-        print(
-            "\nAlors que vous avancez prudemment, vous remarquez un vieux livre posé à terre. La couverture semble usée, mais le titre est encore lisible : *'L'Ordre des Âges'.*")
-        print("\nVous ramassez le livre et l'ouvrez. Une phrase attire votre attention :")
-        print(
-            "\"Dans le grand cycle, l'enfant vient avant le guerrier, mais après le vieillard. Le roi se tient toujours entre eux.\"")
-        print("\nEn levant les yeux, vous remarquez que les tableaux représentent :")
-        print("1. Un enfant avec un jouet")
-        print("2. Un roi en pleine gloire")
-        print("3. Un vieillard tenant une canne")
-        print("4. Un guerrier avec une épée")
+    else:
+
 
         # Demander si le joueur veut résoudre l'énigme ou non
-        choix_énigme = input("\nVoulez-vous regarder de plus près les tableaux? (oui/non) > ").strip().lower()
+        choix_énigme = input(NaratorFunc("demande_engime")).strip().lower()
 
         if choix_énigme != "oui":
-            print("\nVous décidez de ne pas résoudre l'énigme pour le moment.")
-            print("Vous continuez à avancer dans le couloir, en ignorant les tableaux mal alignés.")
-            # Ajouter un autre élément de l'histoire ici pour continuer sans résoudre l'énigme
-            print("\nVous sentez une légère brise venant d'un autre passage. Vous décidez de vous y diriger.")
-            # Choisir où aller après avoir ignoré l'énigme
+
+            # ancien print
+
+            # ancien print
             choix_direction(player)
             return
 
@@ -225,7 +192,7 @@ def couloir1(player):
         essais = []
         tentatives = 0
 
-        print("\nVous sentez que réaligner les tableaux dans le bon ordre pourrait révéler quelque chose de caché.")
+
 
         while essais != solution:
             print("\nVoici les tableaux dans leur état actuel :")
@@ -288,7 +255,7 @@ def bibli(player):
     """
     Scène de la bibliothèque avec rencontre d'un fantôme et un avertissement pour éviter de mourir ici.
     """
-    if visited_places["bibli"] == True :
+    if visited_places["bibli"] == True:
         print("La bibliothèque semble si calme sans le fantôme")
     else:
         print(
@@ -330,18 +297,20 @@ def bibli(player):
             elif userInput == "inventaire":
                 player.get_inventory()  # Voir l'inventaire
 
+
 def cave(player):
-    if visited_places["cave"] == True :
+    if visited_places["cave"] == True:
         print("vous pouvez voir le trou géant qui vous a emmené dans la grotte")
         print("voulez-vous aller dans la grotte")
         userInput = input()
         if userInput == "oui":
             couloirCaverne(player)
-        else :
+        else:
             print("vous retourner dans le couloir")
             couloir1(player)
-    else :
-        print("Vous entrez dans une cave sombre et mystérieuse. Devant vous se dresse une statue imposante d'un sphinx.")
+    else:
+        print(
+            "Vous entrez dans une cave sombre et mystérieuse. Devant vous se dresse une statue imposante d'un sphinx.")
         print("Son regard perçant semble suivre chacun de vos mouvements.")
         print("\nSoudain, une voix grave résonne dans l'air :")
         print('"Où allez-vous en cette heure si tardive ?"\n')
@@ -380,7 +349,8 @@ def cave(player):
                 print("Vous devez retenter votre chance pour continuer.")
                 return
 
-        print("\nVotre réponse semble déclencher quelque chose d'irréversible. Les murs tremblent, puis s’effondrent brusquement. \nUne masse d’eau vive jaillit des décombres et vous emporte avec une force inouïe. Incapable de lutter, vous êtes propulsé dans une grotte sombre et profonde. \nLes remous violents vous poussent contre les parois rocheuses, et vous vous retrouvez haletant sur une plage de sable noir, à l'intérieur de cette mystérieuse caverne.")
+        print(
+            "\nVotre réponse semble déclencher quelque chose d'irréversible. Les murs tremblent, puis s’effondrent brusquement. \nUne masse d’eau vive jaillit des décombres et vous emporte avec une force inouïe. Incapable de lutter, vous êtes propulsé dans une grotte sombre et profonde. \nLes remous violents vous poussent contre les parois rocheuses, et vous vous retrouvez haletant sur une plage de sable noir, à l'intérieur de cette mystérieuse caverne.")
 
         print("\nUn seul chemins s'offrent à vous :")
         print("Un passage éclairé par une faible lumière.")
@@ -396,14 +366,15 @@ def cave(player):
             if userInput == "inventaire":
                 player.get_inventory()  # Voir l'inventaire
 
-def couloirCaverne(player):
 
+def couloirCaverne(player):
     if visited_places["cuisine"] == True:
         print("vous arpenter les couloirs sombres de la caverne, celle-ci à l'air bien calme sans l'immense araignée ")
 
-        
-    print("\nVous avancez dans les couloirs sombres de la grotte. L'air est lourd, et une odeur nauséabonde vous prend à la gorge.")
-    print("Soudain, un bruit inquiétant résonne. Vous levez les yeux et apercevez une énorme araignée suspendue au plafond.")
+    print(
+        "\nVous avancez dans les couloirs sombres de la grotte. L'air est lourd, et une odeur nauséabonde vous prend à la gorge.")
+    print(
+        "Soudain, un bruit inquiétant résonne. Vous levez les yeux et apercevez une énorme araignée suspendue au plafond.")
     print("Elle descend lentement sur sa toile, ses yeux multiples brillant dans l'obscurité.")
     print("\nC'est un combat à mort ! Préparez-vous !\n")
 
@@ -430,6 +401,7 @@ def couloirCaverne(player):
         clé = Item("Clé de l'araignée", 0, 0)
         player.add_to_inventory(clé)
 
+
 def chambre(player):
     pass;
 
@@ -443,13 +415,7 @@ def main():
     """
     Fonction principale du jeu
     """
-    print("Bienvenue dans le Jeu d'Aventure !")
-    print("Vous êtes un aventurier audacieux, qui s'est aventuré dans un vieux château abandonné en pleine forêt.")
-    print(
-        "Le château a été laissé à l'abandon depuis des siècles, et des rumeurs parlent de trésors cachés et de secrets oubliés.")
-    print("Alors que vous explorez le château, vous vous retrouvez perdu dans ses couloirs sombres et labyrinthiques.")
-    print("Vous pouvez choisir de vous déplacer dans différentes directions pour découvrir ce que cache le château.")
-
+    
     # Demander le nom du joueur
     name = input("Entrez votre nom : ")
     print(f"Bonne chance, {name}. Vous allez en avoir besoin.")
